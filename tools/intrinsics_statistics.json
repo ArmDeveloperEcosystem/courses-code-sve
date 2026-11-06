@@ -1,0 +1,645 @@
+{
+  "schema_version": 1,
+  "generated": {
+    "timestamp_utc": "2026-10-01T08:44:15Z",
+    "git_commit": "37a434cce8b7f0047142a9ce1e5d938f871f80e8",
+    "generator": {
+      "name": "tools/generate_intrinsics_statistics.py",
+      "version": 1
+    }
+  },
+  "normalization": {
+    "description": "Intrinsic names are normalized to the base mnemonic by removing element type suffixes, predicate policy suffixes, and other underscore-delimited variants.",
+    "examples": {
+      "svadd_n_u32_m": "svadd",
+      "svld1_gather_u32index_u32": "svld1",
+      "svptest_any": "svptest",
+      "svwhilelt_b8": "svwhilelt"
+    },
+    "ignored_suffix_classes": [
+      "element_type",
+      "predicate_policy",
+      "underscore_delimited_variant"
+    ]
+  },
+  "documentation": {
+    "base_url": "https://developer.arm.com/architectures/instruction-sets/intrinsics/",
+    "lookup_url_template": "https://developer.arm.com/architectures/instruction-sets/intrinsics/?search={intrinsic}"
+  },
+  "tasks": {
+    "base64": {
+      "display_name": "Base64 Encode And Decode",
+      "intrinsics": {
+        "svadd": 5,
+        "svand": 9,
+        "svcmpeq": 6,
+        "svcmpge": 4,
+        "svcmpgt": 3,
+        "svcmplt": 4,
+        "svcnt": 2,
+        "svdup": 8,
+        "svindex": 1,
+        "svld1": 17,
+        "svlsl": 3,
+        "svlsr": 6,
+        "svmul": 1,
+        "svorr": 3,
+        "svptrue": 2,
+        "svreinterpret": 4,
+        "svsel": 14,
+        "svst1": 6,
+        "svsub": 4,
+        "svtbl": 12,
+        "svwhilelt": 7
+      }
+    },
+    "bloom_filter": {
+      "display_name": "Bloom filter",
+      "intrinsics": {
+        "svadd": 4,
+        "svand": 12,
+        "svcmpeq": 2,
+        "svcnt": 9,
+        "svdup": 34,
+        "sveor": 18,
+        "svindex": 6,
+        "svld1": 4,
+        "svlsl": 4,
+        "svlsr": 22,
+        "svmla": 6,
+        "svmul": 16,
+        "svorr": 2,
+        "svptest": 2,
+        "svst1": 3,
+        "svst1w": 1,
+        "svwhilelt": 6
+      }
+    },
+    "vector_examples": {
+      "display_name": "Evaluate explicit SVE implementations for simple integer vector operations",
+      "intrinsics": {
+        "svadd": 1,
+        "svcnt": 6,
+        "svld1": 3,
+        "svmaxv": 1,
+        "svminv": 1,
+        "svst1": 1,
+        "svwhilelt": 6
+      }
+    },
+    "histogram": {
+      "display_name": "Histogram",
+      "intrinsics": {
+        "svadd": 9,
+        "svcmpeq": 2,
+        "svcnt": 6,
+        "svcntp": 5,
+        "svhistcnt": 8,
+        "svindex": 2,
+        "svld1": 11,
+        "svld1ub": 1,
+        "svld1uh": 1,
+        "svptrue": 4,
+        "svst1": 12,
+        "svwhilelt": 6
+      }
+    },
+    "JSON_sci": {
+      "display_name": "JSON Structural-Character Indexing",
+      "intrinsics": {
+        "svbic": 4,
+        "svbrka": 2,
+        "svbrkb": 2,
+        "svcmpeq": 7,
+        "svcnt": 3,
+        "svcntp": 4,
+        "svcompact": 2,
+        "svdup": 2,
+        "svindex": 2,
+        "svld1": 5,
+        "svmatch": 4,
+        "svorr": 8,
+        "svptest": 10,
+        "svptrue": 5,
+        "svst1": 2,
+        "svwhilelt": 5
+      }
+    },
+    "match_and_visit": {
+      "display_name": "Match and visit",
+      "intrinsics": {
+        "svcmplt": 3,
+        "svcnt": 3,
+        "svcntp": 2,
+        "svcompact": 1,
+        "svlastb": 9,
+        "svld1": 3,
+        "svpfalse": 2,
+        "svpnext": 9,
+        "svptest": 1,
+        "svst1": 1,
+        "svwhilelt": 4
+      }
+    },
+    "run_length_decode": {
+      "display_name": "Module: Evaluate Run-Length Decoding with SVE",
+      "intrinsics": {
+        "svcnt": 1,
+        "svdup": 1,
+        "svst1": 1,
+        "svwhilelt": 1
+      }
+    },
+    "strlen": {
+      "display_name": "Optimize C-string length with SVE",
+      "intrinsics": {
+        "svbrkb": 3,
+        "svcmpeq": 4,
+        "svcnt": 2,
+        "svcntp": 6,
+        "svld1": 1,
+        "svldff1": 3,
+        "svptest": 5,
+        "svptrue": 3,
+        "svrdffr": 3,
+        "svsetffr": 4,
+        "svwhilele": 1
+      }
+    },
+    "example": {
+      "display_name": "Repeatable Task-Based SVE Course Module Template",
+      "intrinsics": {}
+    },
+    "set_intersection": {
+      "display_name": "Set Intersection",
+      "intrinsics": {
+        "svbrkb": 1,
+        "svcmpeq": 2,
+        "svcnt": 2,
+        "svcntp": 1,
+        "svld1": 2,
+        "svptest": 2,
+        "svwhilelt": 2
+      }
+    },
+    "rust": {
+      "display_name": "Using SVE intrinsics from Rust",
+      "intrinsics": {
+        "svaddv": 1,
+        "svcnt": 1,
+        "svdup": 1,
+        "svld1": 2,
+        "svmla": 1,
+        "svptrue": 1,
+        "svsub": 1,
+        "svwhilelt": 1
+      }
+    },
+    "VSS": {
+      "display_name": "Vector Similarity Search",
+      "intrinsics": {
+        "svadd": 4,
+        "svaddv": 3,
+        "svcnt": 3,
+        "svcvt": 8,
+        "svcvtlt": 2,
+        "svdot": 1,
+        "svdup": 6,
+        "svld1": 3,
+        "svmla": 10,
+        "svmlalb": 3,
+        "svmlalt": 3,
+        "svptrue": 4,
+        "svsel": 2,
+        "svsub": 5,
+        "svsublb": 1,
+        "svsublt": 1,
+        "svtrn2": 4,
+        "svunpkhi": 4,
+        "svunpklo": 4,
+        "svwhilelt": 3
+      }
+    },
+    "sve_match": {
+      "display_name": "Vectorize a multi-value search with SVE2 MATCH",
+      "intrinsics": {
+        "svcnt": 2,
+        "svld1": 8,
+        "svmatch": 6,
+        "svptest": 6,
+        "svptrue": 2
+      }
+    }
+  },
+  "intrinsics": {
+    "svadd": {
+      "total_count": 23,
+      "tasks": {
+        "VSS": 4,
+        "base64": 5,
+        "bloom_filter": 4,
+        "histogram": 9,
+        "vector_examples": 1
+      }
+    },
+    "svaddv": {
+      "total_count": 4,
+      "tasks": {
+        "VSS": 3,
+        "rust": 1
+      }
+    },
+    "svand": {
+      "total_count": 21,
+      "tasks": {
+        "base64": 9,
+        "bloom_filter": 12
+      }
+    },
+    "svbic": {
+      "total_count": 4,
+      "tasks": {
+        "JSON_sci": 4
+      }
+    },
+    "svbrka": {
+      "total_count": 2,
+      "tasks": {
+        "JSON_sci": 2
+      }
+    },
+    "svbrkb": {
+      "total_count": 6,
+      "tasks": {
+        "JSON_sci": 2,
+        "set_intersection": 1,
+        "strlen": 3
+      }
+    },
+    "svcmpeq": {
+      "total_count": 23,
+      "tasks": {
+        "JSON_sci": 7,
+        "base64": 6,
+        "bloom_filter": 2,
+        "histogram": 2,
+        "set_intersection": 2,
+        "strlen": 4
+      }
+    },
+    "svcmpge": {
+      "total_count": 4,
+      "tasks": {
+        "base64": 4
+      }
+    },
+    "svcmpgt": {
+      "total_count": 3,
+      "tasks": {
+        "base64": 3
+      }
+    },
+    "svcmplt": {
+      "total_count": 7,
+      "tasks": {
+        "base64": 4,
+        "match_and_visit": 3
+      }
+    },
+    "svcnt": {
+      "total_count": 40,
+      "tasks": {
+        "JSON_sci": 3,
+        "VSS": 3,
+        "base64": 2,
+        "bloom_filter": 9,
+        "histogram": 6,
+        "match_and_visit": 3,
+        "run_length_decode": 1,
+        "rust": 1,
+        "set_intersection": 2,
+        "strlen": 2,
+        "sve_match": 2,
+        "vector_examples": 6
+      }
+    },
+    "svcntp": {
+      "total_count": 18,
+      "tasks": {
+        "JSON_sci": 4,
+        "histogram": 5,
+        "match_and_visit": 2,
+        "set_intersection": 1,
+        "strlen": 6
+      }
+    },
+    "svcompact": {
+      "total_count": 3,
+      "tasks": {
+        "JSON_sci": 2,
+        "match_and_visit": 1
+      }
+    },
+    "svcvt": {
+      "total_count": 8,
+      "tasks": {
+        "VSS": 8
+      }
+    },
+    "svcvtlt": {
+      "total_count": 2,
+      "tasks": {
+        "VSS": 2
+      }
+    },
+    "svdot": {
+      "total_count": 1,
+      "tasks": {
+        "VSS": 1
+      }
+    },
+    "svdup": {
+      "total_count": 52,
+      "tasks": {
+        "JSON_sci": 2,
+        "VSS": 6,
+        "base64": 8,
+        "bloom_filter": 34,
+        "run_length_decode": 1,
+        "rust": 1
+      }
+    },
+    "sveor": {
+      "total_count": 18,
+      "tasks": {
+        "bloom_filter": 18
+      }
+    },
+    "svhistcnt": {
+      "total_count": 8,
+      "tasks": {
+        "histogram": 8
+      }
+    },
+    "svindex": {
+      "total_count": 11,
+      "tasks": {
+        "JSON_sci": 2,
+        "base64": 1,
+        "bloom_filter": 6,
+        "histogram": 2
+      }
+    },
+    "svlastb": {
+      "total_count": 9,
+      "tasks": {
+        "match_and_visit": 9
+      }
+    },
+    "svld1": {
+      "total_count": 59,
+      "tasks": {
+        "JSON_sci": 5,
+        "VSS": 3,
+        "base64": 17,
+        "bloom_filter": 4,
+        "histogram": 11,
+        "match_and_visit": 3,
+        "rust": 2,
+        "set_intersection": 2,
+        "strlen": 1,
+        "sve_match": 8,
+        "vector_examples": 3
+      }
+    },
+    "svld1ub": {
+      "total_count": 1,
+      "tasks": {
+        "histogram": 1
+      }
+    },
+    "svld1uh": {
+      "total_count": 1,
+      "tasks": {
+        "histogram": 1
+      }
+    },
+    "svldff1": {
+      "total_count": 3,
+      "tasks": {
+        "strlen": 3
+      }
+    },
+    "svlsl": {
+      "total_count": 7,
+      "tasks": {
+        "base64": 3,
+        "bloom_filter": 4
+      }
+    },
+    "svlsr": {
+      "total_count": 28,
+      "tasks": {
+        "base64": 6,
+        "bloom_filter": 22
+      }
+    },
+    "svmatch": {
+      "total_count": 10,
+      "tasks": {
+        "JSON_sci": 4,
+        "sve_match": 6
+      }
+    },
+    "svmaxv": {
+      "total_count": 1,
+      "tasks": {
+        "vector_examples": 1
+      }
+    },
+    "svminv": {
+      "total_count": 1,
+      "tasks": {
+        "vector_examples": 1
+      }
+    },
+    "svmla": {
+      "total_count": 17,
+      "tasks": {
+        "VSS": 10,
+        "bloom_filter": 6,
+        "rust": 1
+      }
+    },
+    "svmlalb": {
+      "total_count": 3,
+      "tasks": {
+        "VSS": 3
+      }
+    },
+    "svmlalt": {
+      "total_count": 3,
+      "tasks": {
+        "VSS": 3
+      }
+    },
+    "svmul": {
+      "total_count": 17,
+      "tasks": {
+        "base64": 1,
+        "bloom_filter": 16
+      }
+    },
+    "svorr": {
+      "total_count": 13,
+      "tasks": {
+        "JSON_sci": 8,
+        "base64": 3,
+        "bloom_filter": 2
+      }
+    },
+    "svpfalse": {
+      "total_count": 2,
+      "tasks": {
+        "match_and_visit": 2
+      }
+    },
+    "svpnext": {
+      "total_count": 9,
+      "tasks": {
+        "match_and_visit": 9
+      }
+    },
+    "svptest": {
+      "total_count": 26,
+      "tasks": {
+        "JSON_sci": 10,
+        "bloom_filter": 2,
+        "match_and_visit": 1,
+        "set_intersection": 2,
+        "strlen": 5,
+        "sve_match": 6
+      }
+    },
+    "svptrue": {
+      "total_count": 21,
+      "tasks": {
+        "JSON_sci": 5,
+        "VSS": 4,
+        "base64": 2,
+        "histogram": 4,
+        "rust": 1,
+        "strlen": 3,
+        "sve_match": 2
+      }
+    },
+    "svrdffr": {
+      "total_count": 3,
+      "tasks": {
+        "strlen": 3
+      }
+    },
+    "svreinterpret": {
+      "total_count": 4,
+      "tasks": {
+        "base64": 4
+      }
+    },
+    "svsel": {
+      "total_count": 16,
+      "tasks": {
+        "VSS": 2,
+        "base64": 14
+      }
+    },
+    "svsetffr": {
+      "total_count": 4,
+      "tasks": {
+        "strlen": 4
+      }
+    },
+    "svst1": {
+      "total_count": 26,
+      "tasks": {
+        "JSON_sci": 2,
+        "base64": 6,
+        "bloom_filter": 3,
+        "histogram": 12,
+        "match_and_visit": 1,
+        "run_length_decode": 1,
+        "vector_examples": 1
+      }
+    },
+    "svst1w": {
+      "total_count": 1,
+      "tasks": {
+        "bloom_filter": 1
+      }
+    },
+    "svsub": {
+      "total_count": 10,
+      "tasks": {
+        "VSS": 5,
+        "base64": 4,
+        "rust": 1
+      }
+    },
+    "svsublb": {
+      "total_count": 1,
+      "tasks": {
+        "VSS": 1
+      }
+    },
+    "svsublt": {
+      "total_count": 1,
+      "tasks": {
+        "VSS": 1
+      }
+    },
+    "svtbl": {
+      "total_count": 12,
+      "tasks": {
+        "base64": 12
+      }
+    },
+    "svtrn2": {
+      "total_count": 4,
+      "tasks": {
+        "VSS": 4
+      }
+    },
+    "svunpkhi": {
+      "total_count": 4,
+      "tasks": {
+        "VSS": 4
+      }
+    },
+    "svunpklo": {
+      "total_count": 4,
+      "tasks": {
+        "VSS": 4
+      }
+    },
+    "svwhilele": {
+      "total_count": 1,
+      "tasks": {
+        "strlen": 1
+      }
+    },
+    "svwhilelt": {
+      "total_count": 41,
+      "tasks": {
+        "JSON_sci": 5,
+        "VSS": 3,
+        "base64": 7,
+        "bloom_filter": 6,
+        "histogram": 6,
+        "match_and_visit": 4,
+        "run_length_decode": 1,
+        "rust": 1,
+        "set_intersection": 2,
+        "vector_examples": 6
+      }
+    }
+  }
+}

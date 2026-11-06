@@ -1,0 +1,28 @@
+#!/bin/sh
+# SPDX-FileCopyrightText: Copyright 2026 Arm Limited and/or its affiliates <open-source-office@arm.com>
+# SPDX-License-Identifier: BSD-3-Clause-Clear
+#
+# Wrapper script for running SVE binaries under QEMU user-mode emulation.
+# The SVE vector length can be controlled at runtime by setting the
+# STBC_SVE_VL environment variable to a value in bits (128, 256, 512, 1024, or 2048).
+#
+# Examples:
+#   STBC_SVE_VL=256 cmake --build build -t test-all
+#   STBC_SVE_VL=128 cmake --build build -t benchmark-histogram
+
+QEMU="@STBC_QEMU_EXECUTABLE@"
+
+if [ -n "$STBC_SVE_VL" ]; then
+  case "$STBC_SVE_VL" in
+    128|256|512|1024|2048)
+      VL_BYTES=$((STBC_SVE_VL / 8))
+      exec "$QEMU" -cpu "max,sve-default-vector-length=${VL_BYTES}" "$@"
+      ;;
+    *)
+      echo "Error: STBC_SVE_VL must be one of: 128, 256, 512, 1024, 2048 (got '$STBC_SVE_VL')" >&2
+      exit 1
+      ;;
+  esac
+else
+  exec "$QEMU" "$@"
+fi

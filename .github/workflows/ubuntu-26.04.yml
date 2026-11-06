@@ -1,0 +1,79 @@
+name: "Ubuntu 26.04 AArch64 (gcc+clang)"
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  CMAKE_BUILD_TYPE: Debug
+  JOBS: 2
+
+jobs:
+  ubuntu_2604_aarch64_clang:
+    name: "Ubuntu 26.04 AArch64 / clang: configure, build and check"
+    runs-on: ubuntu-26.04-arm
+    steps:
+    - uses: actions/checkout@v6
+    - uses: actions/setup-go@v7
+      with:
+        go-version-file: golang/go.mod
+        cache-dependency-path: golang/go.sum
+    - name: Configure
+      run: CC=clang CXX=clang++ cmake -B ${{github.workspace}}/build-ubuntu-2604-clang -DCMAKE_BUILD_TYPE:STRING=${{env.CMAKE_BUILD_TYPE}}
+    - name: Build
+      run: cmake --build ${{github.workspace}}/build-ubuntu-2604-clang --config ${{env.CMAKE_BUILD_TYPE}} -- -j${{env.JOBS}}
+    - name: Build Go test binary
+      working-directory: golang
+      run: |
+        mkdir -p ${{github.workspace}}/build-ubuntu-2604-clang/golang
+        CC=clang CXX=clang++ go test -c \
+          -o ${{github.workspace}}/build-ubuntu-2604-clang/golang/golang.test .
+    - name: Check
+      run: cmake --build ${{github.workspace}}/build-ubuntu-2604-clang -t test-all
+    - name: Check with QEMU at different SVE vector lengths
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y qemu-user
+        for vector_bits in 128 256 512 1024 2048; do
+          vector_bytes=$((vector_bits / 8))
+          echo "SVE vector length: ${vector_bits} bits"
+          qemu-aarch64 -cpu "max,sve-default-vector-length=${vector_bytes}" \
+            ${{github.workspace}}/build-ubuntu-2604-clang/test/test --gtest_color=yes
+          qemu-aarch64 -cpu "max,sve-default-vector-length=${vector_bytes}" \
+            ${{github.workspace}}/build-ubuntu-2604-clang/golang/golang.test -test.v
+        done
+  ubuntu_2604_aarch64_gcc:
+    name: "Ubuntu 26.04 AArch64 / gcc: configure, build and check"
+    runs-on: ubuntu-26.04-arm
+    steps:
+    - uses: actions/checkout@v6
+    - uses: actions/setup-go@v7
+      with:
+        go-version-file: golang/go.mod
+        cache-dependency-path: golang/go.sum
+    - name: Configure
+      run: CC=gcc CXX=g++ cmake -B ${{github.workspace}}/build-ubuntu-2604-gcc -DCMAKE_BUILD_TYPE:STRING=${{env.CMAKE_BUILD_TYPE}}
+    - name: Build
+      run: cmake --build ${{github.workspace}}/build-ubuntu-2604-gcc --config ${{env.CMAKE_BUILD_TYPE}} -- -j${{env.JOBS}}
+    - name: Build Go test binary
+      working-directory: golang
+      run: |
+        mkdir -p ${{github.workspace}}/build-ubuntu-2604-gcc/golang
+        CC=gcc CXX=g++ go test -c \
+          -o ${{github.workspace}}/build-ubuntu-2604-gcc/golang/golang.test .
+    - name: Check
+      run: cmake --build ${{github.workspace}}/build-ubuntu-2604-gcc -t test-all
+    - name: Check with QEMU at different SVE vector lengths
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y qemu-user
+        for vector_bits in 128 256 512 1024 2048; do
+          vector_bytes=$((vector_bits / 8))
+          echo "SVE vector length: ${vector_bits} bits"
+          qemu-aarch64 -cpu "max,sve-default-vector-length=${vector_bytes}" \
+            ${{github.workspace}}/build-ubuntu-2604-gcc/test/test --gtest_color=yes
+          qemu-aarch64 -cpu "max,sve-default-vector-length=${vector_bytes}" \
+            ${{github.workspace}}/build-ubuntu-2604-gcc/golang/golang.test -test.v
+        done

@@ -1,0 +1,39 @@
+name: "SVE Intrinsics Statistics"
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  intrinsics_statistics:
+    name: "Generate SVE intrinsics statistics"
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v6
+    - name: Set up Python
+      uses: actions/setup-python@v6
+      with:
+        python-version: "3.12"
+    - name: Generate statistics
+      shell: bash
+      run: |
+        set -o pipefail
+        python3 tools/generate_intrinsics_statistics.py | tee /tmp/intrinsics_summary.md
+    - name: Add summary
+      run: |
+        echo "## SVE Intrinsics Statistics" >> "${GITHUB_STEP_SUMMARY}"
+        cat /tmp/intrinsics_summary.md >> "${GITHUB_STEP_SUMMARY}"
+    - name: Validate JSON
+      run: python3 -m json.tool tools/intrinsics_statistics.json > /dev/null
+    - name: Upload statistics artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: intrinsics_statistics
+        path: tools/intrinsics_statistics.json
+        if-no-files-found: error
