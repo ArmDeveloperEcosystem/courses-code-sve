@@ -5,7 +5,8 @@ HeaderFileExtensions:
   - h
 ImplementationFileExtensions:
   - cpp
-FormatStyle:     file
+# Keep this aligned with .clang-format; module paths cannot discover that file here.
+FormatStyle:     '{BasedOnStyle: LLVM, IndentWidth: 4}'
 CheckOptions:
   readability-identifier-naming.StructCase: 'CamelCase'
   readability-identifier-naming.ClassCase: 'CamelCase'

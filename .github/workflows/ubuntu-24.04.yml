@@ -21,7 +21,7 @@ jobs:
         go-version-file: module-13-go-vectorization/golang/go.mod
         cache-dependency-path: module-13-go-vectorization/golang/go.sum
     - name: Configure
-      run: CC=clang CXX=clang++ cmake -B ${{github.workspace}}/build-ubuntu-2404-clang -DCMAKE_BUILD_TYPE:STRING=${{env.CMAKE_BUILD_TYPE}}
+      run: CC=clang CXX=clang++ cmake -S ${{github.workspace}}/course_support -B ${{github.workspace}}/build-ubuntu-2404-clang -DCMAKE_BUILD_TYPE:STRING=${{env.CMAKE_BUILD_TYPE}}
     - name: Build
       run: cmake --build ${{github.workspace}}/build-ubuntu-2404-clang --config ${{env.CMAKE_BUILD_TYPE}} -- -j${{env.JOBS}}
     - name: Build Go test binary
@@ -54,7 +54,7 @@ jobs:
         go-version-file: module-13-go-vectorization/golang/go.mod
         cache-dependency-path: module-13-go-vectorization/golang/go.sum
     - name: Configure
-      run: CC=gcc CXX=g++ cmake -B ${{github.workspace}}/build-ubuntu-2404-gcc -DCMAKE_BUILD_TYPE:STRING=${{env.CMAKE_BUILD_TYPE}}
+      run: CC=gcc CXX=g++ cmake -S ${{github.workspace}}/course_support -B ${{github.workspace}}/build-ubuntu-2404-gcc -DCMAKE_BUILD_TYPE:STRING=${{env.CMAKE_BUILD_TYPE}}
     - name: Build
       run: cmake --build ${{github.workspace}}/build-ubuntu-2404-gcc --config ${{env.CMAKE_BUILD_TYPE}} -- -j${{env.JOBS}}
     - name: Build Go test binary

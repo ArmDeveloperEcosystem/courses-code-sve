@@ -5,19 +5,21 @@
 
 # Contributing
 
-Keep changes aligned with the [SVE course](https://learn.arm.com/courses/sve/) and the [repository conventions](AGENTS.md). For a fix, describe the affected module, the problem, and how you checked the result. Use the [build guide](docs/building.md) to configure, test, and benchmark the C++ tasks.
+Keep changes aligned with the [SVE course](https://learn.arm.com/courses/sve/) and the [repository conventions](.agents/repository-guide.md). For a fix, describe the affected module, the problem, and how you checked the result. Use the [build guide](course_support/docs/building.md) to configure, test, and benchmark the C++ tasks.
 
 ## Repository layout
 
 Course tasks live inside `module-<number>-<topic>/` directories matching the course module numbers, using two digits such as `module-01-integer-vector-operations/`. The task directory name remains the CMake task name, so it must be unique across the repository. Use [course_support/example/](course_support/example/) as the template for new C++ tasks.
 
-Shared build helpers, headers, dependency configuration, runners, the task template, and maintenance tools live under [course_support/](course_support/). Keep the complete repository together when building a task. Learner instructions belong in the course; shared repository guidance belongs in [docs/](docs/).
+Shared build helpers, headers, dependency configuration, runners, the task template, and maintenance tools live under [course_support/](course_support/). Keep the complete repository together when building a task. Learner instructions belong in the course; shared repository guidance belongs in [course_support/docs/](course_support/docs/).
+
+The two additional root entries are `.github/`, required for GitHub Actions workflows, and the short `AGENTS.md` entry point for repository-wide agent instructions. Keep other build files, tooling, configuration, and shared documentation in `course_support/`, and detailed agent guidance in `.agents/`.
 
 ## Adding a C++ task
 
 1. Create a task directory such as `my_task_name` inside the appropriate module directory. Copy the source files and `CMakeLists.txt` from [course_support/example/](course_support/example/) as a starting point.
 2. Update its implementation, tests, and benchmarks, and document the exercise in the course.
-3. Register the task in the top-level [CMakeLists.txt](CMakeLists.txt), before the shared test and benchmark runners.
+3. Register the task in [course_support/CMakeLists.txt](course_support/CMakeLists.txt), before the shared test and benchmark runners.
 4. Update [Find your module](README.md#find-your-module) if adding a module.
 5. Update any course lesson paths, source links, and commands affected by the change.
 
@@ -34,10 +36,10 @@ module-NN-topic/
     └── test.cpp
 ```
 
-Register its source directory and a task-named binary directory:
+Register its source directory relative to `course_support/` and a task-named binary directory:
 
 ```cmake
-add_subdirectory(module-NN-topic/my_task_name my_task_name)
+add_subdirectory(../module-NN-topic/my_task_name my_task_name)
 ```
 
 The second argument keeps generated files under `build/my_task_name/`, including the executable at `build/my_task_name/Release/my_task_name` with Ninja Multi-Config.
@@ -103,9 +105,21 @@ Use ACLE feature macros to guard code requiring SVE, SVE2, or later features. Wh
 
 ## Checking changes
 
-Format C/C++ code with the repository's [.clang-format](.clang-format), and follow the naming and other rules in [.clang-tidy](.clang-tidy). Do not edit generated build files.
+The formatting and analysis configurations live in [course_support/config/](course_support/config/). Pass their paths explicitly when using [clang-format](https://clang.llvm.org/docs/ClangFormatStyleOptions.html#configuring-style-with-clang-format) and [clang-tidy](https://clang.llvm.org/extra/clang-tidy/), including in editor settings:
 
-Run the relevant tests and, for changes affecting performance, measure a Release build on suitable native hardware. The [build guide](docs/building.md) includes per-task targets and checks across QEMU vector lengths.
+```sh
+clang-format --style=file:course_support/config/.clang-format --dry-run --Werror module-03-c-string-length/strlen/strlen.cpp
+```
+
+Use `-i` in place of `--dry-run --Werror` to format a file. To run clang-tidy with a compilation database, configure a fresh build directory with `-DCMAKE_EXPORT_COMPILE_COMMANDS=ON`, then run:
+
+```sh
+clang-tidy --config-file=course_support/config/.clang-tidy -p build module-03-c-string-length/strlen/strlen.cpp
+```
+
+The inline `FormatStyle` in `.clang-tidy` matches `.clang-format`; keep them synchronized when changing formatting rules. Do not edit generated build files.
+
+Run the relevant tests and, for changes affecting performance, measure a Release build on suitable native hardware. The [build guide](course_support/docs/building.md) includes per-task targets and checks across QEMU vector lengths.
 
 When changing intrinsic usage, regenerate the statistics from the repository root:
 
@@ -114,6 +128,6 @@ python3 course_support/tools/generate_intrinsics_statistics.py
 python3 course_support/tools/generate_intrinsics_statistics.py --check
 ```
 
-Keep the [intrinsics overview](docs/intrinsics.md) and course instructions synchronized with the implementation. Rust and Go tasks use their own [build and test commands](docs/building.md#rust-and-go-examples).
+Keep the [intrinsics overview](course_support/docs/intrinsics.md) and course instructions synchronized with the implementation. Rust and Go tasks use their own [build and test commands](course_support/docs/building.md#rust-and-go-examples).
 
-Code is provided under the [Clear BSD License](LICENSE.txt). Preserve the existing license notices and include the appropriate notices in new files.
+Code is provided under the [Clear BSD License](LICENSE.md). Preserve the existing license notices and include the appropriate notices in new files.

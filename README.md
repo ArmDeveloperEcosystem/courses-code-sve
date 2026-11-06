@@ -30,10 +30,10 @@ Module 0 introduces the course and shared setup; it has no separate code directo
 ## Using this repository
 
 - Follow the lesson's environment and command instructions, then open the implementation in the corresponding module directory.
-- Keep the complete repository together. C++ modules use the shared build infrastructure in [course_support/](course_support/). Configure and build from the repository root using the [build, test, and benchmark guide](docs/building.md).
-- Build the Rust and Go examples separately using the commands in the [build guide](docs/building.md#rust-and-go-examples). Their toolchain and runtime requirements differ from the C++ tasks.
-- Use the [intrinsics overview](docs/intrinsics.md) to find examples of particular SVE operations. For performance measurements, use a Release build on native hardware with the required features; the build guide also describes QEMU for correctness checks.
+- Keep the complete repository together. C++ modules use the shared build infrastructure in [course_support/](course_support/). Configure and build from the repository root using the [build, test, and benchmark guide](course_support/docs/building.md).
+- Build the Rust and Go examples separately using the commands in the [build guide](course_support/docs/building.md#rust-and-go-examples). Their toolchain and runtime requirements differ from the C++ tasks.
+- Use the [intrinsics overview](course_support/docs/intrinsics.md) to find examples of particular SVE operations. For performance measurements, use a Release build on native hardware with the required features; the build guide also describes QEMU for correctness checks.
 
 Optional [SVE and SIMD optimization guidance for AI agents](.agents/skills/sve-and-simd-optimization/SKILL.md) supports working with the code.
 
-For fixes and new tasks, see [Contributing](CONTRIBUTING.md). Code is provided under the [Clear BSD License](LICENSE.txt).
+For fixes and new tasks, see [Contributing](CONTRIBUTING.md). Code is provided under the [Clear BSD License](LICENSE.md).

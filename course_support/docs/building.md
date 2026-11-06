@@ -7,7 +7,7 @@
 
 Use the [course](https://learn.arm.com/courses/sve/) for each exercise's setup and instructions. This guide describes the shared CMake build for the C++ tasks. Run its commands from the repository root unless stated otherwise.
 
-The [Rust task](../module-12-rust-squared-distance/rust/) and [Go task](../module-13-go-vectorization/golang/) use Cargo and Go respectively, and are built and tested separately from CMake. See [Rust and Go examples](#rust-and-go-examples) below.
+The [Rust task](../../module-12-rust-squared-distance/rust/) and [Go task](../../module-13-go-vectorization/golang/) use Cargo and Go respectively, and are built and tested separately from CMake. See [Rust and Go examples](#rust-and-go-examples) below.
 
 ## Software requirements
 
@@ -40,20 +40,20 @@ During configuration, CMake downloads, builds, and installs these dependencies i
 | [GoogleTest](https://github.com/google/googletest) v1.17.0 | Unit tests | [GoogleTest license](https://github.com/google/googletest/blob/v1.17.0/LICENSE) |
 | [Google Benchmark](https://github.com/google/benchmark) v1.9.5 | Benchmarks | [Google Benchmark license](https://github.com/google/benchmark/blob/v1.9.5/LICENSE) |
 
-These dependencies are not bundled with the repository and retain their own licenses. Their versions are configured in [course_support/external/CMakeLists.txt](../course_support/external/CMakeLists.txt).
+These dependencies are not bundled with the repository and retain their own licenses. Their versions are configured in [course_support/external/CMakeLists.txt](../external/CMakeLists.txt).
 
 ## Configuring and building
 
 Use Ninja Multi-Config to keep `Debug` and `Release` builds in one build directory:
 
 ```sh
-cmake -G "Ninja Multi-Config" -S . -B build
+cmake -G "Ninja Multi-Config" -S course_support -B build
 cmake --build build --config Release
 ```
 
-`-G` selects the generator, `-S .` selects the repository as the source directory, and `-B build` selects the generated build directory. The first configuration can take longer because it fetches and builds the dependencies. The `build/` directory is ignored by Git; do not edit its generated files.
+`-G` selects the generator, `-S course_support` selects the shared CMake project as the source directory, and `-B build` selects the generated build directory. The first configuration can take longer because it fetches and builds the dependencies. The `build/` directory is ignored by Git; do not edit its generated files.
 
-Re-run the configuration command after updating the module or shared-support directory layout. Task names and build output paths remain the same: for example, the source for `strlen` is in `module-03-c-string-length/strlen/`, and its Release executable is `build/strlen/Release/strlen`.
+If you previously configured with `-S .`, use a fresh build directory when switching to `-S course_support`: CMake records the source directory in its cache. For example, configure with `-B build/updated-layout` and use that build directory in subsequent commands. Task names and output paths relative to the build directory remain the same: for example, the source for `strlen` is in `module-03-c-string-length/strlen/`, and its Release executable is `build/strlen/Release/strlen`.
 
 Select Debug explicitly when needed:
 
@@ -73,7 +73,7 @@ cmake --build build --config Release --target clean
 Set `CC` and `CXX` when configuring a fresh build directory. For example, after installing Clang 18:
 
 ```sh
-CC=/usr/bin/clang-18 CXX=/usr/bin/clang++-18 cmake -G "Ninja Multi-Config" -S . -B build/clang
+CC=/usr/bin/clang-18 CXX=/usr/bin/clang++-18 cmake -G "Ninja Multi-Config" -S course_support -B build/clang
 cmake --build build/clang --config Release
 ```
 
@@ -126,7 +126,7 @@ sudo apt install qemu-user
 Enable the option and build:
 
 ```sh
-cmake -G "Ninja Multi-Config" -S . -B build -DSTBC_SVE_CROSS_COMPILE=ON
+cmake -G "Ninja Multi-Config" -S course_support -B build -DSTBC_SVE_CROSS_COMPILE=ON
 cmake --build build --config Release
 cmake --build build --config Release --target test-all
 ```
@@ -134,7 +134,7 @@ cmake --build build --config Release --target test-all
 This uses `-march=armv8-a+sve+sve2` in place of the native CPU flag. CMake finds `qemu-aarch64` or `qemu-aarch64-static` on `PATH`; specify its location if necessary:
 
 ```sh
-cmake -G "Ninja Multi-Config" -S . -B build \
+cmake -G "Ninja Multi-Config" -S course_support -B build \
   -DSTBC_SVE_CROSS_COMPILE=ON \
   -DSTBC_QEMU_EXECUTABLE=/path/to/qemu-aarch64
 ```
@@ -167,7 +167,7 @@ These examples use their own build tools. Follow the corresponding course module
 
 ### Rust
 
-The [Rust example](../module-12-rust-squared-distance/rust/) requires a nightly toolchain with the `portable_simd` and, on AArch64, `stdarch_aarch64_sve` features used by its source. Install a suitable nightly toolchain with `rustup toolchain install nightly`.
+The [Rust example](../../module-12-rust-squared-distance/rust/) requires a nightly toolchain with the `portable_simd` and, on AArch64, `stdarch_aarch64_sve` features used by its source. Install a suitable nightly toolchain with `rustup toolchain install nightly`.
 
 Starting from the repository root:
 
@@ -189,7 +189,7 @@ The program checks for SVE at runtime. It reads two columns of floating-point in
 
 ### Go
 
-The [Go example](../module-13-go-vectorization/golang/) requires Go 1.24 or later. Its Linux Arm64 cgo path also needs a GCC- or Clang-compatible C++ compiler with SVE intrinsics support. Runtime checks select SVE or SVE2 kernels when supported, with Go fallbacks otherwise.
+The [Go example](../../module-13-go-vectorization/golang/) requires Go 1.24 or later. Its Linux Arm64 cgo path also needs a GCC- or Clang-compatible C++ compiler with SVE intrinsics support. Runtime checks select SVE or SVE2 kernels when supported, with Go fallbacks otherwise.
 
 Starting from the repository root:
 
@@ -210,4 +210,4 @@ CGO_ENABLED=0 go test ./...
 
 Keep subsequent Cargo or Go commands in their respective task directories. Use native hardware with the relevant features for performance measurements.
 
-Return to [Find your module](../README.md#find-your-module).
+Return to [Find your module](../../README.md#find-your-module).
