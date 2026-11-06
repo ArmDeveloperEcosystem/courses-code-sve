@@ -7,7 +7,7 @@
 
 Use the [course](https://learn.arm.com/courses/sve/) for each exercise's setup and instructions. This guide describes the shared CMake build for the C++ tasks. Run its commands from the repository root unless stated otherwise.
 
-The [Rust task](../module-12-rust-squared-distance/rust/README.md) and [Go task](../module-13-go-vectorization/golang/README.md) use Cargo and Go respectively, and are built and tested separately from CMake.
+The [Rust task](../module-12-rust-squared-distance/rust/) and [Go task](../module-13-go-vectorization/golang/) use Cargo and Go respectively, and are built and tested separately from CMake. See [Rust and Go examples](#rust-and-go-examples) below.
 
 ## Software requirements
 
@@ -40,7 +40,7 @@ During configuration, CMake downloads, builds, and installs these dependencies i
 | [GoogleTest](https://github.com/google/googletest) v1.17.0 | Unit tests | [GoogleTest license](https://github.com/google/googletest/blob/v1.17.0/LICENSE) |
 | [Google Benchmark](https://github.com/google/benchmark) v1.9.5 | Benchmarks | [Google Benchmark license](https://github.com/google/benchmark/blob/v1.9.5/LICENSE) |
 
-These dependencies are not bundled with the repository and retain their own licenses. Their versions are configured in [external/CMakeLists.txt](../external/CMakeLists.txt).
+These dependencies are not bundled with the repository and retain their own licenses. Their versions are configured in [course_support/external/CMakeLists.txt](../course_support/external/CMakeLists.txt).
 
 ## Configuring and building
 
@@ -53,7 +53,7 @@ cmake --build build --config Release
 
 `-G` selects the generator, `-S .` selects the repository as the source directory, and `-B build` selects the generated build directory. The first configuration can take longer because it fetches and builds the dependencies. The `build/` directory is ignored by Git; do not edit its generated files.
 
-Re-run the configuration command after updating to the module directory layout. Task names and build output paths remain the same: for example, the source for `strlen` is in `module-3-c-string-length/strlen/`, and its Release executable is `build/strlen/Release/strlen`.
+Re-run the configuration command after updating the module or shared-support directory layout. Task names and build output paths remain the same: for example, the source for `strlen` is in `module-03-c-string-length/strlen/`, and its Release executable is `build/strlen/Release/strlen`.
 
 Select Debug explicitly when needed:
 
@@ -160,5 +160,54 @@ STBC_SVE_VL=2048 cmake --build build --config Release --target test-all
 ```
 
 The wrapper accepts exactly `128`, `256`, `512`, `1024`, or `2048`. If the variable is unset, the wrapper leaves the vector length to QEMU's default. Set it explicitly when comparing correctness across vector lengths.
+
+## Rust and Go examples
+
+These examples use their own build tools. Follow the corresponding course module for the full exercise and interpretation of results.
+
+### Rust
+
+The [Rust example](../module-12-rust-squared-distance/rust/) requires a nightly toolchain with the `portable_simd` and, on AArch64, `stdarch_aarch64_sve` features used by its source. Install a suitable nightly toolchain with `rustup toolchain install nightly`.
+
+Starting from the repository root:
+
+```sh
+cd module-12-rust-squared-distance/rust
+cargo +nightly build --release
+cargo +nightly test
+cargo +nightly run --release -- scalar data_large.tsv
+cargo +nightly run --release -- simd data_large.tsv
+```
+
+On an AArch64 system with SVE, also run:
+
+```sh
+cargo +nightly run --release -- sve data_large.tsv
+```
+
+The program checks for SVE at runtime. It reads two columns of floating-point input and reports their accumulated squared difference and computation time. The input files `data.tsv` and `data_large.tsv` are kept beside `Cargo.toml`.
+
+### Go
+
+The [Go example](../module-13-go-vectorization/golang/) requires Go 1.24 or later. Its Linux Arm64 cgo path also needs a GCC- or Clang-compatible C++ compiler with SVE intrinsics support. Runtime checks select SVE or SVE2 kernels when supported, with Go fallbacks otherwise.
+
+Starting from the repository root:
+
+```sh
+cd module-13-go-vectorization/golang
+mkdir -p build
+go build -o build/golang-sve .
+./build/golang-sve
+go test ./...
+go test -bench=. -benchmem ./...
+```
+
+To test the Go fallback with cgo disabled:
+
+```sh
+CGO_ENABLED=0 go test ./...
+```
+
+Keep subsequent Cargo or Go commands in their respective task directories. Use native hardware with the relevant features for performance measurements.
 
 Return to [Find your module](../README.md#find-your-module).

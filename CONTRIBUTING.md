@@ -9,25 +9,23 @@ Keep changes aligned with the [SVE course](https://learn.arm.com/courses/sve/) a
 
 ## Repository layout
 
-Course tasks live inside `module-<number>-<topic>/` directories matching the course module numbers. The task directory name remains the CMake task name, so it must be unique across the repository. The root [example/](example/) directory is a template for new C++ tasks, rather than a course module.
+Course tasks live inside `module-<number>-<topic>/` directories matching the course module numbers, using two digits such as `module-01-integer-vector-operations/`. The task directory name remains the CMake task name, so it must be unique across the repository. Use [course_support/example/](course_support/example/) as the template for new C++ tasks.
 
-Shared build helpers, headers, dependency configuration, test runner, and benchmark runner remain in `cmake/`, `include/`, `external/`, `test/`, and `benchmark/`. Keep the complete repository together when building a task.
+Shared build helpers, headers, dependency configuration, runners, the task template, and maintenance tools live under [course_support/](course_support/). Keep the complete repository together when building a task. Learner instructions belong in the course; shared repository guidance belongs in [docs/](docs/).
 
 ## Adding a C++ task
 
-1. Copy [example/](example/) into the appropriate module directory, and rename the copy to your task name, such as `my_task_name`.
-2. Update its source files, tests, benchmarks, and README.
-3. Register the task in the top-level [CMakeLists.txt](CMakeLists.txt), before the shared `test` and `benchmark` directories.
-4. Add the task to the module README and update [Find your module](README.md#find-your-module) if adding a module.
+1. Create a task directory such as `my_task_name` inside the appropriate module directory. Copy the source files and `CMakeLists.txt` from [course_support/example/](course_support/example/) as a starting point.
+2. Update its implementation, tests, and benchmarks, and document the exercise in the course.
+3. Register the task in the top-level [CMakeLists.txt](CMakeLists.txt), before the shared test and benchmark runners.
+4. Update [Find your module](README.md#find-your-module) if adding a module.
 5. Update any course lesson paths, source links, and commands affected by the change.
 
 An individual task has this layout:
 
 ```text
-module-N-topic/
-├── README.md
+module-NN-topic/
 └── my_task_name/
-    ├── README.md
     ├── CMakeLists.txt
     ├── *.cpp
     ├── *.h
@@ -39,7 +37,7 @@ module-N-topic/
 Register its source directory and a task-named binary directory:
 
 ```cmake
-add_subdirectory(module-N-topic/my_task_name my_task_name)
+add_subdirectory(module-NN-topic/my_task_name my_task_name)
 ```
 
 The second argument keeps generated files under `build/my_task_name/`, including the executable at `build/my_task_name/Release/my_task_name` with Ninja Multi-Config.
@@ -112,10 +110,10 @@ Run the relevant tests and, for changes affecting performance, measure a Release
 When changing intrinsic usage, regenerate the statistics from the repository root:
 
 ```sh
-python3 tools/generate_intrinsics_statistics.py
-python3 tools/generate_intrinsics_statistics.py --check
+python3 course_support/tools/generate_intrinsics_statistics.py
+python3 course_support/tools/generate_intrinsics_statistics.py --check
 ```
 
-Keep the [intrinsics overview](docs/intrinsics.md) and task documentation synchronized with the implementation. Rust and Go tasks use their own build and test commands, documented in their task READMEs.
+Keep the [intrinsics overview](docs/intrinsics.md) and course instructions synchronized with the implementation. Rust and Go tasks use their own [build and test commands](docs/building.md#rust-and-go-examples).
 
 Code is provided under the [Clear BSD License](LICENSE.txt). Preserve the existing license notices and include the appropriate notices in new files.

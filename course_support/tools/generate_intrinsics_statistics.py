@@ -19,8 +19,8 @@ from typing import Any
 
 
 SCHEMA_VERSION = 1
-GENERATOR_NAME = "tools/generate_intrinsics_statistics.py"
-GENERATOR_VERSION = 2
+GENERATOR_NAME = "course_support/tools/generate_intrinsics_statistics.py"
+GENERATOR_VERSION = 3
 OUTPUT_FILE_NAME = "intrinsics_statistics.json"
 SOURCE_SUFFIXES = {".c", ".cpp", ".h", ".rs"}
 HELPER_PREFIXES = ("sve_", "sve2_", "sve2p1_", "sve2p2_")
@@ -30,7 +30,7 @@ INTRINSIC_CALL_RE = re.compile(r"\b(sv[a-z0-9_]*)\s*\(")
 
 
 def repo_root() -> Path:
-    return Path(__file__).resolve().parents[1]
+    return Path(__file__).resolve().parents[2]
 
 
 def output_file() -> Path:
@@ -133,20 +133,11 @@ def is_task_dir(path: Path) -> bool:
 
 def task_dirs(root: Path) -> list[Path]:
     # Inspect only the supported task locations, not generated build trees.
-    candidates = list(root.iterdir())
+    candidates = [root / "course_support" / "example"]
     for module_dir in root.glob("module-*"):
         if module_dir.is_dir():
             candidates.extend(module_dir.iterdir())
     return sorted(path for path in candidates if is_task_dir(path))
-
-
-def display_name(task_dir: Path) -> str:
-    readme = task_dir / "README.md"
-    if readme.is_file():
-        for line in readme.read_text(encoding="utf-8").splitlines():
-            if line.startswith("# "):
-                return line[2:].strip()
-    return task_dir.name
 
 
 def source_files(task_dir: Path) -> list[Path]:
@@ -190,7 +181,7 @@ def build_statistics(root: Path) -> dict[str, Any]:
         task_counts = count_intrinsics(source_files(task_dir))
         task_intrinsics = dict(sorted(task_counts.items()))
         tasks[task_name] = {
-            "display_name": display_name(task_dir),
+            "display_name": task_name,
             "intrinsics": task_intrinsics,
         }
 

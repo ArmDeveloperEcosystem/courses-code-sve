@@ -26,7 +26,7 @@ Use this skill as general guidance for improving known hot paths while preservin
 - For multiply-heavy integer kernels, prefer widening multiply and multiply-add sequences such as `umull` and `umlal` when they delay narrowing and avoid overflow.
 - Use saturating arithmetic and narrowing instructions when they express both the arithmetic and clamping behavior, such as `uqsub`, `uqshrn`, or paired narrowing forms that fill a full output register before storing.
 - Use interleaved stores or loads when the memory format is naturally interleaved, such as RGB-like tuples, rather than scalarizing channel packing.
-- When using C++ template metaprogramming or helper wrappers around intrinsics in hot paths, guarantee inlining with the `INLINE` macro, defined in `include/SVE-task-based-course.h`, which abstracts how to force the compiler to inline a specific function. With Clang and similar compilers, missed inlining can leave function call overhead that outweighs the SIMD speedup.
+- When using C++ template metaprogramming or helper wrappers around intrinsics in hot paths, guarantee inlining with the `INLINE` macro, defined in `course_support/include/SVE-task-based-course.h`, which abstracts how to force the compiler to inline a specific function. With Clang and similar compilers, missed inlining can leave function call overhead that outweighs the SIMD speedup.
 - Treat prefetching as benchmark-driven. Add `prfm` or equivalent prefetches only when access is predictable and measurements show a benefit.
 - Inspect generated code after each meaningful change. Intrinsics do not guarantee the compiler selected the best instruction sequence.
 

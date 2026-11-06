@@ -21,21 +21,21 @@ jobs:
       with:
         python-version: "3.12"
     - name: Test statistics generator
-      run: python3 -m unittest discover -s tools -p 'test_*.py'
+      run: python3 -m unittest discover -s course_support/tools -p 'test_*.py'
     - name: Generate statistics
       shell: bash
       run: |
         set -o pipefail
-        python3 tools/generate_intrinsics_statistics.py | tee /tmp/intrinsics_summary.md
+        python3 course_support/tools/generate_intrinsics_statistics.py | tee /tmp/intrinsics_summary.md
     - name: Add summary
       run: |
         echo "## SVE Intrinsics Statistics" >> "${GITHUB_STEP_SUMMARY}"
         cat /tmp/intrinsics_summary.md >> "${GITHUB_STEP_SUMMARY}"
     - name: Validate JSON
-      run: python3 -m json.tool tools/intrinsics_statistics.json > /dev/null
+      run: python3 -m json.tool course_support/tools/intrinsics_statistics.json > /dev/null
     - name: Upload statistics artifact
       uses: actions/upload-artifact@v4
       with:
         name: intrinsics_statistics
-        path: tools/intrinsics_statistics.json
+        path: course_support/tools/intrinsics_statistics.json
         if-no-files-found: error

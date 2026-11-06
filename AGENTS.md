@@ -17,9 +17,9 @@
 
 ## Task Structure
 
-- Course tasks live in `module-<number>-<topic>/<task_name>/`, matching the course module numbers.
+- Course tasks live in `module-<number>-<topic>/<task_name>/`, matching the course module numbers with two digits (for example, `module-01-integer-vector-operations/`).
 - C++ tasks are registered from the top-level `CMakeLists.txt` with `add_subdirectory(module-<number>-<topic>/<task_name> <task_name>)` to preserve build output paths. Rust and Go tasks use their own build tools.
-- The root-level `example/` directory is the template for new C++ tasks.
+- Shared build infrastructure and maintenance tools live under `course_support/`. The `course_support/example/` directory is the template for new C++ tasks.
 - A task name is derived from its directory name.
 - Task `CMakeLists.txt` files should call `stbc_add_task(` without passing the task name.
 - Keep task-local headers private; do not expose task include directories globally.
@@ -27,8 +27,8 @@
 
 ## Editing Guidance
 
-- Prefer following the `example/` task layout when adding new tasks.
+- Prefer following the `course_support/example/` task layout when adding new tasks.
 - Do not edit generated files under `build/`.
-- Keep README examples synchronized with the actual CMake helper API.
+- Keep shared documentation in `docs/` synchronized with the CMake helper API. Learner instructions belong in the course rather than nested module READMEs.
 - C/C++ code is formatted with `clang-format` according to the rules from the `.clang-format` file.
 - Naming and other conventions for C/C++ code come from the `.clang-tidy` rules file, which can be used by `clang-tidy`.

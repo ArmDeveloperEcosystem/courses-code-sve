@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "generated": {
-    "timestamp_utc": "2026-11-06T14:09:36Z",
-    "git_commit": "ab89a4c9ff3c964dd8ebf2f49c76e93ad6973d64",
+    "timestamp_utc": "2026-11-06T15:09:14Z",
+    "git_commit": "370a7e3b1b23884e5e8b6137d82e88b24d662127",
     "generator": {
-      "name": "tools/generate_intrinsics_statistics.py",
-      "version": 2
+      "name": "course_support/tools/generate_intrinsics_statistics.py",
+      "version": 3
     }
   },
   "normalization": {
@@ -28,7 +28,7 @@
   },
   "tasks": {
     "base64": {
-      "display_name": "Base64 Encode And Decode",
+      "display_name": "base64",
       "intrinsics": {
         "svadd": 5,
         "svand": 9,
@@ -54,7 +54,7 @@
       }
     },
     "bloom_filter": {
-      "display_name": "Bloom filter",
+      "display_name": "bloom_filter",
       "intrinsics": {
         "svadd": 4,
         "svand": 12,
@@ -75,8 +75,12 @@
         "svwhilelt": 6
       }
     },
+    "example": {
+      "display_name": "example",
+      "intrinsics": {}
+    },
     "golang": {
-      "display_name": "Enable Arm SVE vectorization in Go",
+      "display_name": "golang",
       "intrinsics": {
         "svadd": 5,
         "svand": 4,
@@ -101,20 +105,8 @@
         "svwhilelt": 5
       }
     },
-    "vector_examples": {
-      "display_name": "Evaluate explicit SVE implementations for simple integer vector operations",
-      "intrinsics": {
-        "svadd": 1,
-        "svcnt": 6,
-        "svld1": 3,
-        "svmaxv": 1,
-        "svminv": 1,
-        "svst1": 1,
-        "svwhilelt": 6
-      }
-    },
     "histogram": {
-      "display_name": "Histogram",
+      "display_name": "histogram",
       "intrinsics": {
         "svadd": 9,
         "svcmpeq": 2,
@@ -131,7 +123,7 @@
       }
     },
     "JSON_sci": {
-      "display_name": "JSON Structural-Character Indexing",
+      "display_name": "JSON_sci",
       "intrinsics": {
         "svbic": 4,
         "svbrka": 2,
@@ -152,7 +144,7 @@
       }
     },
     "match_and_visit": {
-      "display_name": "Match and visit",
+      "display_name": "match_and_visit",
       "intrinsics": {
         "svcmplt": 3,
         "svcnt": 3,
@@ -168,7 +160,7 @@
       }
     },
     "run_length_decode": {
-      "display_name": "Module: Evaluate Run-Length Decoding with SVE",
+      "display_name": "run_length_decode",
       "intrinsics": {
         "svcnt": 1,
         "svdup": 1,
@@ -176,8 +168,33 @@
         "svwhilelt": 1
       }
     },
+    "rust": {
+      "display_name": "rust",
+      "intrinsics": {
+        "svaddv": 1,
+        "svcnt": 1,
+        "svdup": 1,
+        "svld1": 2,
+        "svmla": 1,
+        "svptrue": 1,
+        "svsub": 1,
+        "svwhilelt": 1
+      }
+    },
+    "set_intersection": {
+      "display_name": "set_intersection",
+      "intrinsics": {
+        "svbrkb": 1,
+        "svcmpeq": 2,
+        "svcnt": 2,
+        "svcntp": 1,
+        "svld1": 2,
+        "svptest": 2,
+        "svwhilelt": 2
+      }
+    },
     "strlen": {
-      "display_name": "Optimize C-string length with SVE",
+      "display_name": "strlen",
       "intrinsics": {
         "svbrkb": 3,
         "svcmpeq": 4,
@@ -192,37 +209,30 @@
         "svwhilele": 1
       }
     },
-    "example": {
-      "display_name": "Repeatable Task-Based SVE Course Module Template",
-      "intrinsics": {}
-    },
-    "set_intersection": {
-      "display_name": "Set Intersection",
+    "sve_match": {
+      "display_name": "sve_match",
       "intrinsics": {
-        "svbrkb": 1,
-        "svcmpeq": 2,
         "svcnt": 2,
-        "svcntp": 1,
-        "svld1": 2,
-        "svptest": 2,
-        "svwhilelt": 2
+        "svld1": 8,
+        "svmatch": 6,
+        "svptest": 6,
+        "svptrue": 2
       }
     },
-    "rust": {
-      "display_name": "Using SVE intrinsics from Rust",
+    "vector_examples": {
+      "display_name": "vector_examples",
       "intrinsics": {
-        "svaddv": 1,
-        "svcnt": 1,
-        "svdup": 1,
-        "svld1": 2,
-        "svmla": 1,
-        "svptrue": 1,
-        "svsub": 1,
-        "svwhilelt": 1
+        "svadd": 1,
+        "svcnt": 6,
+        "svld1": 3,
+        "svmaxv": 1,
+        "svminv": 1,
+        "svst1": 1,
+        "svwhilelt": 6
       }
     },
     "VSS": {
-      "display_name": "Vector Similarity Search",
+      "display_name": "VSS",
       "intrinsics": {
         "svadd": 4,
         "svaddv": 3,
@@ -244,16 +254,6 @@
         "svunpkhi": 4,
         "svunpklo": 4,
         "svwhilelt": 3
-      }
-    },
-    "sve_match": {
-      "display_name": "Vectorize a multi-value search with SVE2 MATCH",
-      "intrinsics": {
-        "svcnt": 2,
-        "svld1": 8,
-        "svmatch": 6,
-        "svptest": 6,
-        "svptrue": 2
       }
     }
   },

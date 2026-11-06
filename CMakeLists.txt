@@ -57,22 +57,24 @@ set(EXTERNAL_PROJECT_CMAKE_ARGS
       -DCMAKE_CXX_COMPILER:PATH=${CMAKE_CXX_COMPILER}
       -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_BINARY_DIR})
 
+# Use a matching support directory for dependency builds, avoiding cached
+# source paths from the former root-level external/ directory.
 # Download and configure our external dependencies
 execute_process(
   COMMAND ${CMAKE_COMMAND}
-      -S ${CMAKE_SOURCE_DIR}/external
-      -B ${CMAKE_BINARY_DIR}/external
+      -S ${CMAKE_SOURCE_DIR}/course_support/external
+      -B ${CMAKE_BINARY_DIR}/course_support/external
       ${EXTERNAL_PROJECT_CMAKE_ARGS}
 )
 
 # Build our external dependencies.
 execute_process(
-  COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR}/external
+  COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR}/course_support/external
 )
 
 # Install our external dependencies.
 execute_process(
-  COMMAND ${CMAKE_COMMAND} --install ${CMAKE_BINARY_DIR}/external
+  COMMAND ${CMAKE_COMMAND} --install ${CMAKE_BINARY_DIR}/course_support/external
 )
 
 # Import google/googletest package information (library names, paths, dependencies...)
@@ -99,7 +101,7 @@ find_package(benchmark REQUIRED
 # Include the function to add a task, and the global properties to export
 # task information to testing and benchmarking.
 # -------------------------------------------------------------------
-include(cmake/stbc.cmake)
+include(course_support/cmake/stbc.cmake)
 
 # ===================================================================
 # Cross-compilation option: build for SVE on a host that may not have SVE.
@@ -139,9 +141,9 @@ if(STBC_SVE_CROSS_COMPILE)
 
   # Set the emulator command prefix for use by test and benchmark targets.
   # SVE vector length is controlled at runtime via the STBC_SVE_VL environment
-  # variable (in bits: 128, 256, 512, 1024, or 2048). See cmake/qemu-wrapper.sh.
+  # variable (in bits: 128, 256, 512, 1024, or 2048). See course_support/cmake/qemu-wrapper.sh.in.
   configure_file(
-    "${CMAKE_SOURCE_DIR}/cmake/qemu-wrapper.sh.in"
+    "${CMAKE_SOURCE_DIR}/course_support/cmake/qemu-wrapper.sh.in"
     "${CMAKE_BINARY_DIR}/qemu-wrapper.sh"
     @ONLY
     FILE_PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
@@ -176,7 +178,7 @@ if(NOT STBC_PLATFORM_HAS_SVE AND NOT STBC_SVE_CROSS_COMPILE)
   message(WARNING "Platform does not have SVE support - some tasks may not build or run correctly")
 endif()
 
-include_directories("${CMAKE_SOURCE_DIR}/include")
+include_directories("${CMAKE_SOURCE_DIR}/course_support/include")
 add_compile_options(-Wall)
 
 if(STBC_NATIVE_COMPILE_FLAG)
@@ -190,21 +192,21 @@ endif()
 # Add course tasks in module order. Keep binary directories and target names
 # stable so existing build, test, benchmark, and profiling commands still work.
 # -------------------------------------------------------------------
-add_subdirectory(example)
-add_subdirectory(module-1-integer-vector-operations/vector_examples vector_examples)
-add_subdirectory(module-2-run-length-decoding/run_length_decode run_length_decode)
-add_subdirectory(module-3-c-string-length/strlen strlen)
-add_subdirectory(module-4-multi-value-search/sve_match sve_match)
-add_subdirectory(module-5-set-intersection/set_intersection set_intersection)
-add_subdirectory(module-6-match-and-visit/match_and_visit match_and_visit)
-add_subdirectory(module-7-histograms/histogram histogram)
-add_subdirectory(module-8-json-structural-indexing/JSON_sci JSON_sci)
-add_subdirectory(module-9-bloom-filter/bloom_filter bloom_filter)
+add_subdirectory(course_support/example example)
+add_subdirectory(module-01-integer-vector-operations/vector_examples vector_examples)
+add_subdirectory(module-02-run-length-decoding/run_length_decode run_length_decode)
+add_subdirectory(module-03-c-string-length/strlen strlen)
+add_subdirectory(module-04-multi-value-search/sve_match sve_match)
+add_subdirectory(module-05-set-intersection/set_intersection set_intersection)
+add_subdirectory(module-06-match-and-visit/match_and_visit match_and_visit)
+add_subdirectory(module-07-histograms/histogram histogram)
+add_subdirectory(module-08-json-structural-indexing/JSON_sci JSON_sci)
+add_subdirectory(module-09-bloom-filter/bloom_filter bloom_filter)
 add_subdirectory(module-10-vector-similarity/VSS VSS)
 add_subdirectory(module-11-base64/base64 base64)
 
 # ===================================================================
 # Unit testing & benchmarking --- must come last.
 # -------------------------------------------------------------------
-add_subdirectory(test)
-add_subdirectory(benchmark)
+add_subdirectory(course_support/test test)
+add_subdirectory(course_support/benchmark benchmark)
