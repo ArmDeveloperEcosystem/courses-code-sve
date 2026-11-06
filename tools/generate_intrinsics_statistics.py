@@ -20,7 +20,7 @@ from typing import Any
 
 SCHEMA_VERSION = 1
 GENERATOR_NAME = "tools/generate_intrinsics_statistics.py"
-GENERATOR_VERSION = 1
+GENERATOR_VERSION = 2
 OUTPUT_FILE_NAME = "intrinsics_statistics.json"
 SOURCE_SUFFIXES = {".c", ".cpp", ".h", ".rs"}
 HELPER_PREFIXES = ("sve_", "sve2_", "sve2p1_", "sve2p2_")
@@ -120,7 +120,7 @@ def strip_comments_and_literals(source: str) -> str:
 
 
 def is_task_dir(path: Path) -> bool:
-    if (path / "Cargo.toml").is_file():
+    if (path / "Cargo.toml").is_file() or (path / "go.mod").is_file():
         return True
     cmake_file = path / "CMakeLists.txt"
     if not path.is_dir() or not cmake_file.is_file():
@@ -132,7 +132,12 @@ def is_task_dir(path: Path) -> bool:
 
 
 def task_dirs(root: Path) -> list[Path]:
-    return sorted(path for path in root.iterdir() if is_task_dir(path))
+    # Inspect only the supported task locations, not generated build trees.
+    candidates = list(root.iterdir())
+    for module_dir in root.glob("module-*"):
+        if module_dir.is_dir():
+            candidates.extend(module_dir.iterdir())
+    return sorted(path for path in candidates if is_task_dir(path))
 
 
 def display_name(task_dir: Path) -> str:

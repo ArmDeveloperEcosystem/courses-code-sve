@@ -90,10 +90,10 @@ You will:
 
 | Path | Purpose |
 |---|---|
-| `match_and_visit/match_and_visit.cpp` | Scalar, basic SVE, optimized SVE, and compact implementations |
-| `match_and_visit/main.cpp` | Small executable that prints the callback count |
-| `match_and_visit/test.cpp` | Correctness and ordering tests |
-| `match_and_visit/benchmark.cpp` | Match-density benchmarks |
+| `module-6-match-and-visit/match_and_visit/match_and_visit.cpp` | Scalar, basic SVE, optimized SVE, and compact implementations |
+| `module-6-match-and-visit/match_and_visit/main.cpp` | Small executable that prints the callback count |
+| `module-6-match-and-visit/match_and_visit/test.cpp` | Correctness and ordering tests |
+| `module-6-match-and-visit/match_and_visit/benchmark.cpp` | Match-density benchmarks |
 | `cmake/qemu-wrapper.sh.in` | QEMU launcher with selectable SVE vector lengths |
 
 # Complete the match-and-visit workflow
@@ -592,7 +592,6 @@ state-management, and performance requirements of the application.
 
 - Arm C Language Extensions for SVE intrinsics, including `svpnext`,
   `svlastb`, `svcntp`, and `svcompact`;
-- the cross-compilation and QEMU guidance in the repository-level
-  `README.md`; and
-- `match_and_visit/match_and_visit.cpp` for the complete implementations discussed in
+- the [cross-compilation and QEMU guidance](../../docs/building.md#cross-compiling-for-sve); and
+- `module-6-match-and-visit/match_and_visit/match_and_visit.cpp` for the complete implementations discussed in
   this module.

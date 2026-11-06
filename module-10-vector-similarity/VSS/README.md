@@ -854,9 +854,9 @@ Genericity with template meta programming allows to express the algorithm at a h
 
 ## Configure and build
 
-Refer to the instructions in the top level `README.md` for the platform requirements for configuring and building this course.
+See the [build guide](../../docs/building.md) for platform requirements and configuration commands. Run the following commands from the repository root.
 
-Ensure the JSON_sci executable, tests and benchmarks are up to date with:
+Build the VSS executable with:
 
 ```bash
 cmake --build build --config Release --target VSS

@@ -82,7 +82,7 @@ specification](https://arm-software.github.io/acle/main/acle.html).
 
 You need:
 
-- the software listed in the repository's top-level README;
+- the software listed in the [build guide](../../docs/building.md#software-requirements);
 - an AArch64 SVE2 machine, or the repository's QEMU cross-compilation setup;
 - approximately 1 GiB of available memory for the complete benchmark matrix;
 - a Release build for meaningful measurements; and

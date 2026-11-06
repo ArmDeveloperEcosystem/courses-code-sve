@@ -158,7 +158,7 @@ cmake -DBLOOM_BITS="(1 << 21)" -DBLOOM_NUM_HASHES=32 -DBLOOM_NUM_PRECALC_KEYS=80
 
 ## Building and running
 
-These steps assume you have already [installed the software requirements](../README.md#software-requirements) and [configured the project](../README.md#configuring-and-building), which at a minimum means executing (refer to the previous section for tuning some of the bloom filter parameters):
+These steps assume you have already [installed the software requirements](../../docs/building.md#software-requirements) and [configured the project](../../docs/building.md#configuring-and-building). Run the commands from the repository root, starting with (refer to the previous section for tuning some of the bloom filter parameters):
 
 ```sh
 cmake -G "Ninja Multi-Config" -S . -B build

@@ -187,20 +187,21 @@ if(STBC_NATIVE_COMPILE_FLAG)
 endif()
 
 # ===================================================================
-# Add task based examples here.
+# Add course tasks in module order. Keep binary directories and target names
+# stable so existing build, test, benchmark, and profiling commands still work.
 # -------------------------------------------------------------------
 add_subdirectory(example)
-add_subdirectory(JSON_sci)
-add_subdirectory(set_intersection)
-add_subdirectory(VSS)
-add_subdirectory(histogram)
-add_subdirectory(sve_match)
-add_subdirectory(bloom_filter)
-add_subdirectory(match_and_visit)
-add_subdirectory(base64)
-add_subdirectory(strlen)
-add_subdirectory(run_length_decode)
-add_subdirectory(vector_examples)
+add_subdirectory(module-1-integer-vector-operations/vector_examples vector_examples)
+add_subdirectory(module-2-run-length-decoding/run_length_decode run_length_decode)
+add_subdirectory(module-3-c-string-length/strlen strlen)
+add_subdirectory(module-4-multi-value-search/sve_match sve_match)
+add_subdirectory(module-5-set-intersection/set_intersection set_intersection)
+add_subdirectory(module-6-match-and-visit/match_and_visit match_and_visit)
+add_subdirectory(module-7-histograms/histogram histogram)
+add_subdirectory(module-8-json-structural-indexing/JSON_sci JSON_sci)
+add_subdirectory(module-9-bloom-filter/bloom_filter bloom_filter)
+add_subdirectory(module-10-vector-similarity/VSS VSS)
+add_subdirectory(module-11-base64/base64 base64)
 
 # ===================================================================
 # Unit testing & benchmarking --- must come last.

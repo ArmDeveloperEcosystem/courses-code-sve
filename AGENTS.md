@@ -17,7 +17,9 @@
 
 ## Task Structure
 
-- Tasks are root-level directories registered from the top-level `CMakeLists.txt`.
+- Course tasks live in `module-<number>-<topic>/<task_name>/`, matching the course module numbers.
+- C++ tasks are registered from the top-level `CMakeLists.txt` with `add_subdirectory(module-<number>-<topic>/<task_name> <task_name>)` to preserve build output paths. Rust and Go tasks use their own build tools.
+- The root-level `example/` directory is the template for new C++ tasks.
 - A task name is derived from its directory name.
 - Task `CMakeLists.txt` files should call `stbc_add_task(` without passing the task name.
 - Keep task-local headers private; do not expose task include directories globally.

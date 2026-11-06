@@ -313,11 +313,14 @@ mod tests {
 
 ## Build
 
-From this directory, make an optimized build:
+From the repository root, enter the task directory, then make an optimized build:
 
 ```sh
+cd module-12-rust-squared-distance/rust
 cargo +nightly build --release
 ```
+
+Run the remaining Cargo commands from this directory.
 
 ## Test
 

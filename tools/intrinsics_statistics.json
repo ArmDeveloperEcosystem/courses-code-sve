@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "generated": {
-    "timestamp_utc": "2026-10-01T08:44:15Z",
-    "git_commit": "37a434cce8b7f0047142a9ce1e5d938f871f80e8",
+    "timestamp_utc": "2026-11-06T14:09:36Z",
+    "git_commit": "ab89a4c9ff3c964dd8ebf2f49c76e93ad6973d64",
     "generator": {
       "name": "tools/generate_intrinsics_statistics.py",
-      "version": 1
+      "version": 2
     }
   },
   "normalization": {
@@ -60,19 +60,45 @@
         "svand": 12,
         "svcmpeq": 2,
         "svcnt": 9,
-        "svdup": 34,
-        "sveor": 18,
+        "svdup": 22,
+        "sveor": 6,
         "svindex": 6,
         "svld1": 4,
         "svlsl": 4,
-        "svlsr": 22,
+        "svlsr": 10,
         "svmla": 6,
-        "svmul": 16,
+        "svmul": 8,
         "svorr": 2,
         "svptest": 2,
         "svst1": 3,
         "svst1w": 1,
         "svwhilelt": 6
+      }
+    },
+    "golang": {
+      "display_name": "Enable Arm SVE vectorization in Go",
+      "intrinsics": {
+        "svadd": 5,
+        "svand": 4,
+        "svcmpeq": 3,
+        "svcmpge": 1,
+        "svcmplt": 1,
+        "svcnt": 3,
+        "svdup": 2,
+        "svhistcnt": 1,
+        "svindex": 1,
+        "svld1": 10,
+        "svlsl": 2,
+        "svlsr": 4,
+        "svmul": 1,
+        "svorr": 2,
+        "svptrue": 1,
+        "svreinterpret": 2,
+        "svsel": 5,
+        "svst1": 7,
+        "svsub": 1,
+        "svtbl": 4,
+        "svwhilelt": 5
       }
     },
     "vector_examples": {
@@ -233,11 +259,12 @@
   },
   "intrinsics": {
     "svadd": {
-      "total_count": 23,
+      "total_count": 28,
       "tasks": {
         "VSS": 4,
         "base64": 5,
         "bloom_filter": 4,
+        "golang": 5,
         "histogram": 9,
         "vector_examples": 1
       }
@@ -250,10 +277,11 @@
       }
     },
     "svand": {
-      "total_count": 21,
+      "total_count": 25,
       "tasks": {
         "base64": 9,
-        "bloom_filter": 12
+        "bloom_filter": 12,
+        "golang": 4
       }
     },
     "svbic": {
@@ -277,20 +305,22 @@
       }
     },
     "svcmpeq": {
-      "total_count": 23,
+      "total_count": 26,
       "tasks": {
         "JSON_sci": 7,
         "base64": 6,
         "bloom_filter": 2,
+        "golang": 3,
         "histogram": 2,
         "set_intersection": 2,
         "strlen": 4
       }
     },
     "svcmpge": {
-      "total_count": 4,
+      "total_count": 5,
       "tasks": {
-        "base64": 4
+        "base64": 4,
+        "golang": 1
       }
     },
     "svcmpgt": {
@@ -300,19 +330,21 @@
       }
     },
     "svcmplt": {
-      "total_count": 7,
+      "total_count": 8,
       "tasks": {
         "base64": 4,
+        "golang": 1,
         "match_and_visit": 3
       }
     },
     "svcnt": {
-      "total_count": 40,
+      "total_count": 43,
       "tasks": {
         "JSON_sci": 3,
         "VSS": 3,
         "base64": 2,
         "bloom_filter": 9,
+        "golang": 3,
         "histogram": 6,
         "match_and_visit": 3,
         "run_length_decode": 1,
@@ -359,34 +391,37 @@
       }
     },
     "svdup": {
-      "total_count": 52,
+      "total_count": 42,
       "tasks": {
         "JSON_sci": 2,
         "VSS": 6,
         "base64": 8,
-        "bloom_filter": 34,
+        "bloom_filter": 22,
+        "golang": 2,
         "run_length_decode": 1,
         "rust": 1
       }
     },
     "sveor": {
-      "total_count": 18,
+      "total_count": 6,
       "tasks": {
-        "bloom_filter": 18
+        "bloom_filter": 6
       }
     },
     "svhistcnt": {
-      "total_count": 8,
+      "total_count": 9,
       "tasks": {
+        "golang": 1,
         "histogram": 8
       }
     },
     "svindex": {
-      "total_count": 11,
+      "total_count": 12,
       "tasks": {
         "JSON_sci": 2,
         "base64": 1,
         "bloom_filter": 6,
+        "golang": 1,
         "histogram": 2
       }
     },
@@ -397,12 +432,13 @@
       }
     },
     "svld1": {
-      "total_count": 59,
+      "total_count": 69,
       "tasks": {
         "JSON_sci": 5,
         "VSS": 3,
         "base64": 17,
         "bloom_filter": 4,
+        "golang": 10,
         "histogram": 11,
         "match_and_visit": 3,
         "rust": 2,
@@ -431,17 +467,19 @@
       }
     },
     "svlsl": {
-      "total_count": 7,
+      "total_count": 9,
       "tasks": {
         "base64": 3,
-        "bloom_filter": 4
+        "bloom_filter": 4,
+        "golang": 2
       }
     },
     "svlsr": {
-      "total_count": 28,
+      "total_count": 20,
       "tasks": {
         "base64": 6,
-        "bloom_filter": 22
+        "bloom_filter": 10,
+        "golang": 4
       }
     },
     "svmatch": {
@@ -484,18 +522,20 @@
       }
     },
     "svmul": {
-      "total_count": 17,
+      "total_count": 10,
       "tasks": {
         "base64": 1,
-        "bloom_filter": 16
+        "bloom_filter": 8,
+        "golang": 1
       }
     },
     "svorr": {
-      "total_count": 13,
+      "total_count": 15,
       "tasks": {
         "JSON_sci": 8,
         "base64": 3,
-        "bloom_filter": 2
+        "bloom_filter": 2,
+        "golang": 2
       }
     },
     "svpfalse": {
@@ -522,11 +562,12 @@
       }
     },
     "svptrue": {
-      "total_count": 21,
+      "total_count": 22,
       "tasks": {
         "JSON_sci": 5,
         "VSS": 4,
         "base64": 2,
+        "golang": 1,
         "histogram": 4,
         "rust": 1,
         "strlen": 3,
@@ -540,16 +581,18 @@
       }
     },
     "svreinterpret": {
-      "total_count": 4,
+      "total_count": 6,
       "tasks": {
-        "base64": 4
+        "base64": 4,
+        "golang": 2
       }
     },
     "svsel": {
-      "total_count": 16,
+      "total_count": 21,
       "tasks": {
         "VSS": 2,
-        "base64": 14
+        "base64": 14,
+        "golang": 5
       }
     },
     "svsetffr": {
@@ -559,11 +602,12 @@
       }
     },
     "svst1": {
-      "total_count": 26,
+      "total_count": 33,
       "tasks": {
         "JSON_sci": 2,
         "base64": 6,
         "bloom_filter": 3,
+        "golang": 7,
         "histogram": 12,
         "match_and_visit": 1,
         "run_length_decode": 1,
@@ -577,10 +621,11 @@
       }
     },
     "svsub": {
-      "total_count": 10,
+      "total_count": 11,
       "tasks": {
         "VSS": 5,
         "base64": 4,
+        "golang": 1,
         "rust": 1
       }
     },
@@ -597,9 +642,10 @@
       }
     },
     "svtbl": {
-      "total_count": 12,
+      "total_count": 16,
       "tasks": {
-        "base64": 12
+        "base64": 12,
+        "golang": 4
       }
     },
     "svtrn2": {
@@ -627,12 +673,13 @@
       }
     },
     "svwhilelt": {
-      "total_count": 41,
+      "total_count": 46,
       "tasks": {
         "JSON_sci": 5,
         "VSS": 3,
         "base64": 7,
         "bloom_filter": 6,
+        "golang": 5,
         "histogram": 6,
         "match_and_visit": 4,
         "run_length_decode": 1,

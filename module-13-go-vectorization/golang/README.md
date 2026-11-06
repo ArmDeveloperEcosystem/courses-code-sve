@@ -37,7 +37,7 @@ being studied. Instead, you will compare:
 | Workload | Implementations |
 |---|---|
 | Vector-vector addition | Scalar Go and cgo SVE |
-| [Base64 encoding](../base64/README.md) | Go's [`encoding/base64`](https://pkg.go.dev/encoding/base64) and cgo SVE |
+| [Base64 encoding](../../module-11-base64/base64/README.md) | Go's [`encoding/base64`](https://pkg.go.dev/encoding/base64) and cgo SVE |
 
 The learner-facing `VectorAdd` and `Base64Encode` functions hide CPU selection.
 They check the operating system's reported SVE support at runtime and call
@@ -80,10 +80,10 @@ You will:
 
 ## Repository and workflow assets
 
-All Go task files are directly under `golang/`:
+All Go task files are under `module-13-go-vectorization/golang/`:
 
 ```text
-golang/
+module-13-go-vectorization/golang/
 ├── README.md
 ├── go.mod
 ├── go.sum
@@ -98,8 +98,12 @@ golang/
 ```
 
 The module requires [`golang.org/x/sys/cpu`](https://pkg.go.dev/golang.org/x/sys/cpu)
-for operating-system CPU capability reports. Run the remaining commands from
-`golang/`.
+for operating-system CPU capability reports. From the repository root, enter the
+task directory before running the remaining commands:
+
+```sh
+cd module-13-go-vectorization/golang
+```
 
 # Complete the Go-to-SVE workflow
 

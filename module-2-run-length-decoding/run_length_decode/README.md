@@ -121,17 +121,17 @@ By the end of the workflow, you should have:
 
 | Path or asset | Purpose | Used in |
 |---|---|---|
-| `run_length_decode/run_length_decoding.cpp` | Scalar and SVE implementations | Inspection and analysis |
-| `run_length_decode/run_length_decoding.h` | Public decoder declarations and SVE guards | Inspection |
-| `run_length_decode/test.cpp` | Valid, empty, and null-input correctness tests | Correctness step |
-| `run_length_decode/benchmark.cpp` | Registered workloads and decoded-byte counters | Measurement step |
-| `run_length_decode/main.cpp` | `scalar` and, on SVE targets, `sve` command-line entry points | Functional check |
+| `module-2-run-length-decoding/run_length_decode/run_length_decoding.cpp` | Scalar and SVE implementations | Inspection and analysis |
+| `module-2-run-length-decoding/run_length_decode/run_length_decoding.h` | Public decoder declarations and SVE guards | Inspection |
+| `module-2-run-length-decoding/run_length_decode/test.cpp` | Valid, empty, and null-input correctness tests | Correctness step |
+| `module-2-run-length-decoding/run_length_decode/benchmark.cpp` | Registered workloads and decoded-byte counters | Measurement step |
+| `module-2-run-length-decoding/run_length_decode/main.cpp` | `scalar` and, on SVE targets, `sve` command-line entry points | Functional check |
 
 # Complete the run-length decoding workflow
 
 ## 1. Inspect the parser and allocation strategies
 
-Start with `run_length_decode/run_length_decoding.cpp`. Each implementation
+Start with `module-2-run-length-decoding/run_length_decode/run_length_decoding.cpp`. Each implementation
 parses a count by multiplying the previous count by ten and adding the next
 digit. The two-pass path calls `_calcDecodeLength`, allocates
 `decodedLength + 1` bytes, then parses the input again while filling the output.
