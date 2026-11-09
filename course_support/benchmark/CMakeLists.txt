@@ -21,12 +21,12 @@ target_compile_options(benchmark PRIVATE
 target_link_libraries(benchmark benchmark::benchmark ${ALL_TASKS_LIBS})
 
 add_custom_target(benchmark-all
-   COMMAND ${STBC_EMULATOR_COMMAND} benchmark --benchmark_color=true --benchmark_out=benchmark-all.json --benchmark_out_format=json
+   COMMAND ${STBC_EMULATOR_COMMAND} $<TARGET_FILE:benchmark> --benchmark_color=true --benchmark_out=benchmark-all.json --benchmark_out_format=json
    DEPENDS benchmark
 )
 foreach(TASK ${ALL_TASKS})
   add_custom_target(benchmark-${TASK}
-    COMMAND ${STBC_EMULATOR_COMMAND} benchmark --benchmark_color=true --benchmark_filter="${TASK}_.*"
+    COMMAND ${STBC_EMULATOR_COMMAND} $<TARGET_FILE:benchmark> --benchmark_color=true --benchmark_filter="${TASK}_.*"
     DEPENDS benchmark
   )
 endforeach()
