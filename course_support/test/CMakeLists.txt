@@ -14,12 +14,12 @@ stbc_apply_source_defines(test STBC_TASK_TEST_SOURCE_DEFINES)
 target_link_libraries(test GTest::gtest ${ALL_TASKS_LIBS})
 
 add_custom_target(test-all
-  COMMAND ${STBC_EMULATOR_COMMAND} test --gtest_color=yes --gtest_output=json:test-all.json
+  COMMAND ${STBC_EMULATOR_COMMAND} $<TARGET_FILE:test> --gtest_color=yes --gtest_output=json:test-all.json
   DEPENDS test
 )
 foreach(TASK ${ALL_TASKS})
   add_custom_target(test-${TASK}
-    COMMAND ${STBC_EMULATOR_COMMAND} test --gtest_color=yes --gtest_filter="${TASK}*"
+    COMMAND ${STBC_EMULATOR_COMMAND} $<TARGET_FILE:test> --gtest_color=yes --gtest_filter="${TASK}*"
     DEPENDS test
   )
 endforeach()
