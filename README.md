@@ -5,7 +5,7 @@
 
 # Course code for 'Vector programming using Arm SVE and SVE2'
 
-This repository provides example programs, reference implementations, tests, and benchmarks for [Vector programming using Arm SVE and SVE2](https://learn.arm.com/courses/sve/). Follow the course for prerequisites, environment setup, and exercise instructions, then use the module links to find the accompanying code.
+This repository provides example programs, reference implementations, tests, and benchmarks for [Optimize code with Arm Scalable Vector Extension (SVE)](https://learn.arm.com/courses/sve/). Follow the course for prerequisites, environment setup, and exercise instructions, then use the module links to find the accompanying code.
 
 ## Find your module
 
