@@ -160,8 +160,6 @@ BitPositions_t hashScalar32Partitioned(Key_t key) {
 BitPositions_t hashSVE32(Key_t key) {
     BitPositions_t bits{};
 
-    const svuint32_t vec_golden = svdup_u32(BloomBasicOps<uint32_t>::golden);
-    const svuint32_t vec_mask = svdup_u32(BLOOM_MASK);
     const svuint32_t vec_fnvbase =
         svdup_u32(BloomBasicOps<uint32_t>::fnv1a(key));
 
@@ -169,11 +167,11 @@ BitPositions_t hashSVE32(Key_t key) {
          done += (uint32_t)svcntw()) {
         svbool_t pg = svwhilelt_b32(done, (uint32_t)BLOOM_NUM_HASHES);
         svuint32_t vec_lane = svindex_u32(done + 1, 1u);
-        svuint32_t vec_x = svmla_u32_x(pg, vec_fnvbase, vec_lane, vec_golden);
+        svuint32_t vec_x = svmla_n_u32_x(pg, vec_fnvbase, vec_lane, BloomBasicOps<uint32_t>::golden);
 
         vec_x = BloomBasicOps<uint32_t>::mix(pg, vec_x);
 
-        svuint32_t vec_pos_in_filter = svand_u32_x(pg, vec_x, vec_mask);
+        svuint32_t vec_pos_in_filter = svand_n_u32_x(pg, vec_x, BLOOM_MASK);
 
         svst1_u32(pg, &bits[done], vec_pos_in_filter);
     }
@@ -186,8 +184,6 @@ BitPositions_t hashSVE32(Key_t key) {
 BitPositions_t hashSVE64(Key_t key) {
     BitPositions_t bits{};
 
-    const svuint64_t vec_golden = svdup_u64(BloomBasicOps<uint64_t>::golden);
-    const svuint64_t vec_mask = svdup_u64(BLOOM_MASK);
     const svuint64_t vec_fnvbase =
         svdup_u64(BloomBasicOps<uint64_t>::fnv1a(key));
 
@@ -195,11 +191,11 @@ BitPositions_t hashSVE64(Key_t key) {
          done += (uint32_t)svcntd()) {
         svbool_t pg = svwhilelt_b64((uint64_t)done, (uint64_t)BLOOM_NUM_HASHES);
         svuint64_t vec_lane = svindex_u64((uint64_t)done + 1, 1u);
-        svuint64_t vec_x = svmla_u64_x(pg, vec_fnvbase, vec_lane, vec_golden);
+        svuint64_t vec_x = svmla_n_u64_x(pg, vec_fnvbase, vec_lane, BloomBasicOps<uint64_t>::golden);
 
         vec_x = BloomBasicOps<uint64_t>::mix(pg, vec_x);
 
-        svuint64_t vec_pos_in_filter = svand_u64_x(pg, vec_x, vec_mask);
+        svuint64_t vec_pos_in_filter = svand_n_u64_x(pg, vec_x, BLOOM_MASK);
 
         svst1w_u64(pg, &bits[done], vec_pos_in_filter);
     }
@@ -212,12 +208,10 @@ BitPositions_t hashSVE64(Key_t key) {
 // active lanes within a single update; this is not a concurrent insertion API.
 void BloomFilterSVE32Partitioned::add(Key_t key) noexcept {
     const uint32_t base = BloomBasicOps<uint32_t>::fnv1a(key);
-    svuint32_t vec_golden = svdup_u32(BloomBasicOps<uint32_t>::golden);
-    // Folding the first golden increment into base lets slice indices start at
-    // 0.
+    // Folding the first golden increment into base lets the slice indices
+    // start at 0.
     const svuint32_t vec_fnvbase =
         svdup_u32(base + BloomBasicOps<uint32_t>::golden);
-    const svuint32_t vec_mask = svdup_u32(BLOOM_SLICE_MASK);
     const svuint32_t vec_ones = svdup_u32(1);
 
     // Access 32-bit halves of the stored 64-bit words to match the SVE lanes.
@@ -228,13 +222,13 @@ void BloomFilterSVE32Partitioned::add(Key_t key) noexcept {
          done += (uint32_t)svcntw()) {
         svbool_t pg = svwhilelt_b32(done, (uint32_t)BLOOM_NUM_HASHES);
         svuint32_t vec_i = svindex_u32(done, 1u);
-        svuint32_t vec_x = svmla_u32_x(pg, vec_fnvbase, vec_i, vec_golden);
+        svuint32_t vec_x = svmla_n_u32_x(pg, vec_fnvbase, vec_i, BloomBasicOps<uint32_t>::golden);
 
         vec_x = BloomBasicOps<uint32_t>::mix(pg, vec_x);
 
         // Map the mixed hash into its own slice, then add the slice base
         // to obtain a bit position in the complete filter.
-        svuint32_t vec_pos_in_slice = svand_u32_x(pg, vec_x, vec_mask);
+        svuint32_t vec_pos_in_slice = svand_n_u32_x(pg, vec_x, BLOOM_SLICE_MASK);
         svuint32_t vec_slice_base = svmul_n_u32_x(pg, vec_i, BLOOM_SLICE_BITS);
         svuint32_t vec_pos_in_filter =
             svadd_u32_x(pg, vec_slice_base, vec_pos_in_slice);
@@ -259,10 +253,8 @@ void BloomFilterSVE32Partitioned::add(Key_t key) noexcept {
 // bit in any active lane proves absence, so later batches can be skipped.
 bool BloomFilterSVE32Partitioned::maybe_contains(Key_t key) const noexcept {
     const uint32_t base = BloomBasicOps<uint32_t>::fnv1a(key);
-    const svuint32_t vec_golden = svdup_u32(BloomBasicOps<uint32_t>::golden);
     const svuint32_t vec_fnvbase =
         svdup_u32(base + BloomBasicOps<uint32_t>::golden);
-    const svuint32_t vec_mask = svdup_u32(BLOOM_SLICE_MASK);
     const svuint32_t vec_ones = svdup_u32(1);
 
     // Access 32-bit halves of the stored 64-bit words to match the SVE lanes.
@@ -273,13 +265,13 @@ bool BloomFilterSVE32Partitioned::maybe_contains(Key_t key) const noexcept {
          done += (uint32_t)svcntw()) {
         svbool_t pg = svwhilelt_b32(done, (uint32_t)BLOOM_NUM_HASHES);
         svuint32_t vec_i = svindex_u32(done, 1u);
-        svuint32_t vec_x = svmla_u32_x(pg, vec_fnvbase, vec_i, vec_golden);
+        svuint32_t vec_x = svmla_n_u32_x(pg, vec_fnvbase, vec_i, BloomBasicOps<uint32_t>::golden);
 
         vec_x = BloomBasicOps<uint32_t>::mix(pg, vec_x);
 
         // Map the mixed hash into its own slice, then add the slice base
         // to obtain a bit position in the complete filter.
-        svuint32_t vec_pos_in_slice = svand_u32_x(pg, vec_x, vec_mask);
+        svuint32_t vec_pos_in_slice = svand_n_u32_x(pg, vec_x, BLOOM_SLICE_MASK);
         svuint32_t vec_slice_base = svmul_n_u32_x(pg, vec_i, BLOOM_SLICE_BITS);
         svuint32_t vec_pos_in_filter =
             svadd_u32_x(pg, vec_slice_base, vec_pos_in_slice);
@@ -308,23 +300,21 @@ bool BloomFilterSVE32Partitioned::maybe_contains(Key_t key) const noexcept {
 // lane still targets a distinct slice, making the scatter update safe.
 void BloomFilterSVE64Partitioned::add(Key_t key) noexcept {
     const uint64_t base = BloomBasicOps<uint64_t>::fnv1a(key);
-    const svuint64_t vec_golden = svdup_u64(BloomBasicOps<uint64_t>::golden);
     const svuint64_t vec_fnvbase =
         svdup_u64(base + BloomBasicOps<uint64_t>::golden);
-    const svuint64_t vec_mask = svdup_u64(BLOOM_SLICE_MASK);
     const svuint64_t vec_ones = svdup_u64(1);
 
     for (uint32_t done = 0; done < BLOOM_NUM_HASHES;
-         done += (uint32_t)svcntd()) {
+        done += (uint32_t)svcntd()) {
         svbool_t pg = svwhilelt_b64((uint64_t)done, (uint64_t)BLOOM_NUM_HASHES);
         svuint64_t vec_i = svindex_u64((uint64_t)done, 1u);
-        svuint64_t vec_x = svmla_u64_x(pg, vec_fnvbase, vec_i, vec_golden);
+        svuint64_t vec_x = svmla_n_u64_x(pg, vec_fnvbase, vec_i, BloomBasicOps<uint64_t>::golden);
 
         vec_x = BloomBasicOps<uint64_t>::mix(pg, vec_x);
 
         // Map the mixed hash into its own slice, then add the slice base
         // to obtain a bit position in the complete filter.
-        svuint64_t vec_pos_in_slice = svand_u64_x(pg, vec_x, vec_mask);
+        svuint64_t vec_pos_in_slice = svand_n_u64_x(pg, vec_x, BLOOM_SLICE_MASK);
         svuint64_t vec_slice_base = svmul_n_u64_x(pg, vec_i, BLOOM_SLICE_BITS);
         svuint64_t vec_pos_in_filter =
             svadd_u64_x(pg, vec_slice_base, vec_pos_in_slice);
@@ -350,23 +340,21 @@ void BloomFilterSVE64Partitioned::add(Key_t key) noexcept {
 // early when any gathered word lacks its requested bit.
 bool BloomFilterSVE64Partitioned::maybe_contains(Key_t key) const noexcept {
     const uint64_t base = BloomBasicOps<uint64_t>::fnv1a(key);
-    const svuint64_t vec_golden = svdup_u64(BloomBasicOps<uint64_t>::golden);
     const svuint64_t vec_fnvbase =
         svdup_u64(base + BloomBasicOps<uint64_t>::golden);
-    const svuint64_t vec_mask = svdup_u64(BLOOM_SLICE_MASK);
     const svuint64_t vec_ones = svdup_u64(1);
 
     for (uint32_t done = 0; done < BLOOM_NUM_HASHES;
-         done += (uint32_t)svcntd()) {
+        done += (uint32_t)svcntd()) {
         svbool_t pg = svwhilelt_b64((uint64_t)done, (uint64_t)BLOOM_NUM_HASHES);
         svuint64_t vec_i = svindex_u64((uint64_t)done, 1u);
-        svuint64_t vec_x = svmla_u64_x(pg, vec_fnvbase, vec_i, vec_golden);
+        svuint64_t vec_x = svmla_n_u64_x(pg, vec_fnvbase, vec_i, BloomBasicOps<uint64_t>::golden);
 
         vec_x = BloomBasicOps<uint64_t>::mix(pg, vec_x);
 
         // Map the mixed hash into its own slice, then add the slice base
         // to obtain a bit position in the complete filter.
-        svuint64_t vec_pos_in_slice = svand_u64_x(pg, vec_x, vec_mask);
+        svuint64_t vec_pos_in_slice = svand_n_u64_x(pg, vec_x, BLOOM_SLICE_MASK);
         svuint64_t vec_slice_base = svmul_n_u64_x(pg, vec_i, BLOOM_SLICE_BITS);
         svuint64_t vec_pos_in_filter =
             svadd_u64_x(pg, vec_slice_base, vec_pos_in_slice);
