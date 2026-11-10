@@ -3,7 +3,7 @@
   SPDX-License-Identifier: BSD-3-Clause-Clear
 -->
 
-# Course code for 'Vector programming using Arm SVE and SVE2'
+# Course code for 'Optimize code with Arm Scalable Vector Extension (SVE)'
 
 This repository provides example programs, reference implementations, tests, and benchmarks for [Optimize code with Arm Scalable Vector Extension (SVE)](https://learn.arm.com/courses/sve/). Follow the course for prerequisites, environment setup, and exercise instructions, then use the module links to find the accompanying code.
 
