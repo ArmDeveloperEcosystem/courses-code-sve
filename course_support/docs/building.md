@@ -5,7 +5,7 @@
 
 # Building, testing, and benchmarking
 
-Use the [course](https://learn.arm.com/courses/sve/) for each exercise's setup and instructions. This guide describes the shared CMake build for the C++ tasks. Run its commands from the repository root unless stated otherwise.
+Use the [course](https://learn.arm.com/courses/sve-code-optimization/) for each exercise's setup and instructions. This guide describes the shared CMake build for the C++ tasks. Run its commands from the repository root unless stated otherwise.
 
 The [Rust task](../../module-12-rust-squared-distance/rust/) and [Go task](../../module-13-go-vectorization/golang/) use Cargo and Go respectively, and are built and tested separately from CMake. See [Rust and Go examples](#rust-and-go-examples) below.
 
