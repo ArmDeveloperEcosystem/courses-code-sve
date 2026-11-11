@@ -5,7 +5,7 @@
 
 # Contributing
 
-Keep changes aligned with the [SVE course](https://learn.arm.com/courses/sve/) and the [repository conventions](.agents/repository-guide.md). For a fix, describe the affected module, the problem, and how you checked the result. Use the [build guide](course_support/docs/building.md) to configure, test, and benchmark the C++ tasks.
+Keep changes aligned with the [SVE course](https://learn.arm.com/courses/sve-code-optimization/) and the [repository conventions](.agents/repository-guide.md). For a fix, describe the affected module, the problem, and how you checked the result. Use the [build guide](course_support/docs/building.md) to configure, test, and benchmark the C++ tasks.
 
 ## Repository layout
 
